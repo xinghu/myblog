@@ -1,0 +1,31 @@
+<!-- 中间博客部分 -->
+<div id="contentwrapper">
+	<% if @blogs.present? %>
+	<% @blogs.each do |blog| %>
+	<% if blog.present? %>
+	<div class="topPost">
+		<h2 class="topTitle">
+		<%= link_to blog.title,blog, :title => blog.title %>&nbsp;&nbsp;
+
+		</h2>
+		<p class="top_meta">
+			<%= blog.created_at.strftime("%Y-%m-%d %H:%M") %>
+		</p>
+		<div class="topContent">
+			<%= blog.content.html_safe %>
+		</div>
+
+		<div class="cleared">
+		</div>
+	</div>
+	<br/>
+	<% end %>
+	<% end %>
+
+	<div class="pagination">
+		<%#= paginate @blogs%>
+	</div>
+	<% else %>
+	木有内容 ...
+	<% end %>
+</div>

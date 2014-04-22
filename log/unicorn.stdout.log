@@ -1,0 +1,23 @@
+{:inner_app=>Hupengxing::Application}
+{:inner_app=>Hupengxing::Application}
+{:inner_app=>Hupengxing::Application}
+{:inner_app=>Hupengxing::Application}
+{:inner_app=>Hupengxing::Application}
+  [1m[36mBlog Load (1.1ms)[0m  [1mSELECT `blogs`.* FROM `blogs` ORDER BY id desc LIMIT 40[0m
+  [1m[35mCategory Load (0.1ms)[0m  SELECT `categories`.* FROM `categories` 
+  [1m[36mBook Load (0.1ms)[0m  [1mSELECT `books`.* FROM `books` [0m
+  [1m[35m (0.3ms)[0m  SELECT COUNT(count_column) FROM (SELECT 1 AS count_column FROM `blogs` LIMIT 5 OFFSET 0) subquery_for_count 
+  [1m[36mBlog Load (0.3ms)[0m  [1mSELECT `blogs`.* FROM `blogs` ORDER BY id desc LIMIT 5 OFFSET 0[0m
+  [1m[35m (0.3ms)[0m  SELECT COUNT(*) FROM `blogs` 
+  [1m[36mBlog Load (1.0ms)[0m  [1mSELECT `blogs`.* FROM `blogs` ORDER BY id desc LIMIT 40[0m
+  [1m[35mCategory Load (0.2ms)[0m  SELECT `categories`.* FROM `categories` 
+  [1m[36mBook Load (0.2ms)[0m  [1mSELECT `books`.* FROM `books` [0m
+  [1m[35m (0.3ms)[0m  SELECT COUNT(count_column) FROM (SELECT 1 AS count_column FROM `blogs` LIMIT 5 OFFSET 0) subquery_for_count 
+  [1m[36mBlog Load (0.3ms)[0m  [1mSELECT `blogs`.* FROM `blogs` ORDER BY id desc LIMIT 5 OFFSET 0[0m
+  [1m[35m (0.3ms)[0m  SELECT COUNT(*) FROM `blogs` 
+  [1m[36mBlog Load (1.2ms)[0m  [1mSELECT `blogs`.* FROM `blogs` ORDER BY id desc LIMIT 40[0m
+  [1m[35mCategory Load (0.2ms)[0m  SELECT `categories`.* FROM `categories` 
+  [1m[36mBook Load (0.1ms)[0m  [1mSELECT `books`.* FROM `books` [0m
+  [1m[35m (0.3ms)[0m  SELECT COUNT(count_column) FROM (SELECT 1 AS count_column FROM `blogs` LIMIT 5 OFFSET 0) subquery_for_count 
+  [1m[36mBlog Load (0.4ms)[0m  [1mSELECT `blogs`.* FROM `blogs` ORDER BY id desc LIMIT 5 OFFSET 0[0m
+  [1m[35m (0.3ms)[0m  SELECT COUNT(*) FROM `blogs` 

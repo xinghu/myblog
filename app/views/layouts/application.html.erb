@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="google-site-verification" content="CV7CWO5WErtHx4I1-3B_os5Ww-vdB9AA53PKalcBjXc" />
+    <meta name="baidu_union_verify" content="dbcba2e12b58ed0db90c5f097331924b">
+    <meta property="idx:open" content="rmd8jpqq8zh6n56f" />
+    <title><%= @title || $title %></title>
+    <meta name="keywords" content="<%= @keywords || $keywords %>">
+    <meta name="description" content="<%= @description || $description %>">
+    <meta name="robots" content="all">
+    </meta>
+
+    <link rel="shortcut icon" href="http://hupengxing.com/favicon.ico" />
+    <link rel="Bookmark" href="http://hupengxing.com/favicon.ico" />
+
+    <%= auto_discovery_link_tag :atom, "/feeds/feed" %>
+    <%= auto_discovery_link_tag :rss, "/feeds/feed.rss" %>
+
+    <title>Hupengxing's Blog</title>
+    <%= stylesheet_link_tag 'application' %>
+    <%= javascript_include_tag 'application' %>
+    <%= csrf_meta_tag %>
+
+    <script type="text/javascript">
+      SyntaxHighlighter.all();
+      var isIE = !!(window.attachEvent && !window.opera);
+      if(isIE) {
+        alert("为了达到更好的浏览效果，请使用firefox或chrome浏览器");
+      }
+      $(window).scroll( function() {
+        if(get_scrollTop() > 1800 && $(window).width() > 1000 ) {
+          $("#backTop").css('display', 'block');
+
+        } else {
+          $("#backTop").css('display', 'none');
+        }
+      });
+      var get_scrollTop = function() {
+        return document.documentElement.scrollTop == 0 ? document.body.scrollTop : document.documentElement.scrollTop;
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="masthead">
+        <h3 class="muted pull-left">hupengxing's Home</h3>
+        <div class="pull-right">
+          <div class="pull-right">
+            <%= link_to image_tag("feed-bak.png"), feed_path %>
+          </div>
+        <form class="form-search" method="get" id="sform" action="http://www.google.com/search" target="_blank">
+          <div class="input-append">
+            <input type="text" class="span2 search-query" id="q" value="" name="q">
+            <input type="hidden" name="sitesearch" value="http://hupengxing.com" />
+            <button type="submit" class="btn">Search</button>
+          </div>
+        </form>
+        </div>
+        <div style="clear:both;"></div>
+
+        <div class="navbar navbar-inverse">
+          <div class="navbar-inner">
+            <div class="container">
+              <ul class="nav">
+                <li class="<%= 'active' if @category.blank? %>"><a href='/'>Home</a></li>
+                <% if @categories.present? %>
+                  <% @categories.each do |c| %>
+                    <li class=<%='active' if @category.try(:id) == c.id %> >
+                      <%= link_to c.title, c, :title => c.title %>
+                    </li>
+                  <% end %>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="content" class="row-fluid">
+        <div class="span8 main">
+          <%= yield %>
+          <div>
+            <a id="backTop" href="javascript:void(0)" onclick="goTop();" style="display:none;"> TOP↑</a>
+          </div>
+        </div>
+
+        <div class="span4 sidebar">
+          <ul>
+            <li>
+              <div id="welcome" class="sidebox">
+                <h2>About Me</h2>
+                <div id='me'>
+                  <%= image_tag("http://pic.yupoo.com/hupengxing/CMtCdyUA/small.jpg", class:"img-polaroid",  :alt => "design, web development", :title => "about me") %>
+                </div>
+                <p>
+                  胡鹏星 ROR程序员
+                  <%= image_tag("mail.png", :alt => "ruby on rails", :title => "my email") %>
+                </p>
+                  <!-- <p>
+                    喜欢简单，喜欢敏捷，喜欢Ruby On Rails。喜欢自由，喜欢开源，喜欢Linux。
+                  </p> -->
+              </div>
+            </li>
+            <li>
+              <div class="sidebox">
+                <h2>Books</h2>
+                <ul>
+                  <% @books.each do |book| %>
+                    <li>
+                      <%= link_to "#{book.name}",book_path(book), :title => book.name %>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <div class="sidebox">
+                <h2>Recent Posts</h2>
+                <ul>
+                  <% @recent_blogs.each do |blog| %>
+                    <li>
+                      <%= link_to "#{blog.title}",blog, :title => blog.title %>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <div class="sidebox">
+                <h2>My Favourite Songs </h2>
+                <ul>
+                  <li>
+<embed src="http://www.xiami.com/widget/3412116_3484270,2079912,377993,384110,78050,1769863160,1770499084,378052,377950,1769484945,1769303054,1769445146,3484274,384124,1771627825,2052331,3468380,1769956462,379897,1771730170,1769956469,2052332,1771759939,1769915743,1769901638,_235_346_5695c1_457cb4_0/multiPlayer.swf" type="application/x-shockwave-flash" width="235" height="346" wmode="opaque"></embed>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <div class="sidebox">
+                <h2>Friends Links</h2>
+                <ul>
+                  <li>
+                    <%= link_to "hi-ruby", "http://www.hi-ruby.com", :title => "hi-ruby", :target => '_blank' %>
+                  </li>
+                  <li>
+                    <%= link_to "week face's blog", "http://www.writerok.com", :title => "week face's blog", :target => '_blank' %>
+                  </li>
+                  <li>
+                    <%= link_to "shitou's blog", "http://www.ccok.me", :title => "shitou's blog", :target => '_blank' %>
+                  </li>
+                  <li>
+                    <%= link_to "gdocsdrive", "http://www.gdocsdrive.com", :title => "gdocsdrive", :target => '_blank' %>
+                  </li>
+                  <li>
+                    <%= link_to "大煎饼网", "http://www.dajianbing.com", :title => "大煎饼", :target => '_blank' %>
+                  </li>
+                  <li>
+                    <%= link_to "罗茨鼓风机", "http://www.lfgfj.com/", :title => "罗茨鼓风机", :target => '_blank' %>
+                  </li>
+                  <li>
+                    <%= link_to "高温风机", "http://www.lfblower.com/", :title => "高温风机", :target => '_blank' %>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!--footer -->
+      <div id="footer">
+        <%= render '/layouts/analytics' %>
+        <hr/>
+        <p>
+					Copyright &copy;2010-2013 <%= link_to "hupengxing",root_path %>. Powered by Rails3. 京ICP备10028977号
+        </p>
+      </div>
+
+    </div>
+
+  </body>
+</html>

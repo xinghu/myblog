@@ -1,0 +1,57 @@
+<style type="text/css">
+#uyan_cmt_tit {
+  color: #fff !important;
+  text-shadow: #fff 2px 1px 6px !important;
+}
+
+#uyan_stat_info a{
+  color: #fff !important;
+}
+
+#uyan_stat_info #uyan_cmt_btn {
+  color: rgb(102, 102, 102) !important;
+}
+
+#uyan_cmt_txt {
+  color: #fff !important;
+}
+</style>
+<div id="contentwrapper">
+  <div class="topPost">
+    <h2 class="topTitle">
+      <%= @blog.title %>
+    </h2>
+    <p class="top_meta">
+      <%= @blog.created_at.strftime("%Y年%m月%d日") %> by xinghu
+    </p>
+    <div class="topContent">
+      <%= @blog.content.html_safe %>
+    </div>
+
+  </div> <br/>
+  <%= render '/root/ads' %>
+
+  <div style="margin:10px;font-size:15px;" class="topTitle">
+     <p style="float:left;">
+        <% if @blog.previous.present? %>
+          <%= link_to "上一篇", blog_path(@blog.previous) %>
+        <% end %>
+      </p>
+      <p style="float:right;">
+        <% if @blog.next.present? %>
+          <%= link_to "下一篇", blog_path(@blog.next) %>
+        <% end %>
+      </p>
+  </div>
+  <div class="cleared"></div>
+
+  <br>
+  <div id="comments">
+    <!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" id="UYScript" src="http://v1.uyan.cc/js/iframe.js?UYUserId=1519130" async=""></script>
+<!-- UY END -->
+</div>
+  </div>
+
+

@@ -1,0 +1,562 @@
+Connecting to database specified by database.yml
+  [1m[36m (139.3ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (241.9ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations` ON `schema_migrations` (`version`)
+  [1m[36m (0.2ms)[0m  [1mSELECT `schema_migrations`.`version` FROM `schema_migrations` [0m
+Migrating to CreateCategories (20100908064726)
+  [1m[35m (159.5ms)[0m  CREATE TABLE `categories` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `title` varchar(255), `desc` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.4ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20100908064726')[0m
+Migrating to CreateBlogs (20100908064745)
+  [1m[35m (174.4ms)[0m  CREATE TABLE `blogs` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `title` varchar(255), `content` varchar(255), `category_id` int(11), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.4ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20100908064745')[0m
+Migrating to CreateCkeditorAssets (20100914211218)
+  [1m[35m (109.8ms)[0m  CREATE TABLE `ckeditor_assets` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `data_file_name` varchar(255) NOT NULL, `data_content_type` varchar(255), `data_file_size` int(11), `assetable_id` int(11), `assetable_type` varchar(30), `type` varchar(25), `guid` varchar(10), `locale` tinyint DEFAULT 0, `user_id` int(11), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (124.6ms)[0m  [1mCREATE INDEX `idx_assetable_type` ON `ckeditor_assets` (`assetable_type`, `type`, `assetable_id`)[0m
+  [1m[35m (111.2ms)[0m  CREATE INDEX `fk_assetable` ON `ckeditor_assets` (`assetable_type`, `assetable_id`)
+  [1m[36m (157.4ms)[0m  [1mCREATE INDEX `fk_user` ON `ckeditor_assets` (`user_id`)[0m
+  [1m[35m (0.4ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20100914211218')
+Migrating to ChangeBlogContent (20100914211219)
+  [1m[36m (187.0ms)[0m  [1mALTER TABLE `blogs` CHANGE `content` `content` text DEFAULT NULL[0m
+  [1m[35m (0.6ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20100914211219')
+Migrating to CreateComments (20100915081541)
+  [1m[36m (160.6ms)[0m  [1mCREATE TABLE `comments` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `blog_id` int(11), `email` varchar(255), `name` varchar(255), `content` text, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (0.5ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20100915081541')
+Migrating to AddTagColumnToBlog (20110307095717)
+  [1m[36m (122.4ms)[0m  [1mALTER TABLE `blogs` ADD `tags` varchar(255)[0m
+  [1m[35m (0.5ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20110307095717')
+Migrating to AddSeoDescToBlog (20110308073459)
+  [1m[36m (139.2ms)[0m  [1mALTER TABLE `blogs` ADD `seo_desc` text[0m
+  [1m[35m (0.5ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20110308073459')
+Migrating to AddBlogsCountToCategories (20110308084413)
+  [1m[36m (136.4ms)[0m  [1mALTER TABLE `categories` ADD `blogs_count` int(11) DEFAULT 0[0m
+  [1m[35m (144.7ms)[0m  CREATE INDEX `index_blogs_on_id` ON `blogs` (`id`)
+  [1m[36m (132.4ms)[0m  [1mCREATE INDEX `index_blogs_on_title` ON `blogs` (`title`)[0m
+  [1m[35m (166.2ms)[0m  CREATE INDEX `index_blogs_on_category_id` ON `blogs` (`category_id`)
+  [1m[36m (144.5ms)[0m  [1mCREATE INDEX `index_blogs_on_tags` ON `blogs` (`tags`)[0m
+  [1m[35m (156.4ms)[0m  CREATE INDEX `index_categories_on_id` ON `categories` (`id`)
+  [1m[36m (157.3ms)[0m  [1mCREATE INDEX `index_categories_on_title` ON `categories` (`title`)[0m
+  [1m[35m (156.0ms)[0m  CREATE INDEX `index_categories_on_blogs_count` ON `categories` (`blogs_count`)
+  [1m[36m (0.7ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20110308084413')[0m
+Migrating to AddViewsCount (20110309092654)
+  [1m[35m (184.5ms)[0m  ALTER TABLE `blogs` ADD `views_count` int(11) DEFAULT 0
+  [1m[36m (157.7ms)[0m  [1mALTER TABLE `blogs` ADD `comments_count` int(11) DEFAULT 0[0m
+  [1m[35m (111.1ms)[0m  ALTER TABLE `comments` ADD `ip` varchar(255)
+  [1m[36m (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20110309092654')[0m
+Migrating to ChangeColumnName (20110310014242)
+  [1m[35m (1.3ms)[0m  SHOW COLUMNS FROM `blogs` LIKE 'comments_count'
+  [1m[36m (100.7ms)[0m  [1mALTER TABLE `blogs` CHANGE `comments_count` `reviews_count` int(11) DEFAULT 0[0m
+  [1m[35m (0.4ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20110310014242')
+Migrating to CreateBooks (20110428062525)
+  [1m[36m (129.0ms)[0m  [1mCREATE TABLE `books` (`id` int(11) DEFAULT NULL auto_increment PRIMARY KEY, `name` varchar(255), `path` varchar(255), `desc` text, `view_count` int(11) DEFAULT 0, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (0.7ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20110428062525')
+Migrating to DeviseCreateUsers (20110601084625)
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Connecting to database specified by database.yml
+Unable to load admin/book, underlying cause No such file to load -- admin/book 
+
+ /Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:317:in `rescue in depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:312:in `depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:225:in `require_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:767:in `try_to_load_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:782:in `block in require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:762:in `fixtures'
+/Users/hupengxing/works/myblog/test/test_helper.rb:11:in `<class:TestCase>'
+/Users/hupengxing/works/myblog/test/test_helper.rb:6:in `<top (required)>'
+/Users/hupengxing/works/myblog/test/unit/admin/book_test.rb:3:in `require'
+/Users/hupengxing/works/myblog/test/unit/admin/book_test.rb:3:in `<top (required)>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `require'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `block (2 levels) in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `block in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `select'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `<main>'
+Unable to load admin/category, underlying cause No such file to load -- admin/category 
+
+ /Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:317:in `rescue in depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:312:in `depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:225:in `require_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:767:in `try_to_load_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:782:in `block in require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:762:in `fixtures'
+/Users/hupengxing/works/myblog/test/test_helper.rb:11:in `<class:TestCase>'
+/Users/hupengxing/works/myblog/test/test_helper.rb:6:in `<top (required)>'
+/Users/hupengxing/works/myblog/test/unit/admin/book_test.rb:3:in `require'
+/Users/hupengxing/works/myblog/test/unit/admin/book_test.rb:3:in `<top (required)>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `require'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `block (2 levels) in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `block in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `select'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `<main>'
+  [1m[36m (0.3ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.2ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.3ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.2ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.3ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.0ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.1ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.0ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.2ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.3ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.0ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.2ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.3ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.1ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.1ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+Connecting to database specified by database.yml
+Unable to load admin/book, underlying cause No such file to load -- admin/book 
+
+ /Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:317:in `rescue in depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:312:in `depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:225:in `require_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:767:in `try_to_load_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:782:in `block in require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:762:in `fixtures'
+/Users/hupengxing/works/myblog/test/test_helper.rb:11:in `<class:TestCase>'
+/Users/hupengxing/works/myblog/test/test_helper.rb:6:in `<top (required)>'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `require'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `<top (required)>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `require'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `block (2 levels) in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `block in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `select'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `<main>'
+Unable to load admin/category, underlying cause No such file to load -- admin/category 
+
+ /Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:317:in `rescue in depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:312:in `depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:225:in `require_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:767:in `try_to_load_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:782:in `block in require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:762:in `fixtures'
+/Users/hupengxing/works/myblog/test/test_helper.rb:11:in `<class:TestCase>'
+/Users/hupengxing/works/myblog/test/test_helper.rb:6:in `<top (required)>'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `require'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `<top (required)>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `require'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `block (2 levels) in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `block in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `select'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `<main>'
+  [1m[36m (0.2ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.4ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.3ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.2ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.3ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.0ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.2ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.0ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.1ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.3ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.2ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.2ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.0ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.3ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+Connecting to database specified by database.yml
+Unable to load admin/book, underlying cause No such file to load -- admin/book 
+
+ /Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:317:in `rescue in depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:312:in `depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:225:in `require_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:767:in `try_to_load_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:782:in `block in require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:762:in `fixtures'
+/Users/hupengxing/works/myblog/test/test_helper.rb:11:in `<class:TestCase>'
+/Users/hupengxing/works/myblog/test/test_helper.rb:6:in `<top (required)>'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `require'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `<top (required)>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `require'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `block (2 levels) in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `block in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `select'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `<main>'
+Unable to load admin/category, underlying cause No such file to load -- admin/category 
+
+ /Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:317:in `rescue in depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:312:in `depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:225:in `require_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:767:in `try_to_load_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:782:in `block in require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:762:in `fixtures'
+/Users/hupengxing/works/myblog/test/test_helper.rb:11:in `<class:TestCase>'
+/Users/hupengxing/works/myblog/test/test_helper.rb:6:in `<top (required)>'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `require'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `<top (required)>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `require'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `block (2 levels) in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `block in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `select'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `<main>'
+  [1m[36m (0.3ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.2ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.3ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.3ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.1ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.3ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.2ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.2ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.3ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+Connecting to database specified by database.yml
+Unable to load admin/book, underlying cause No such file to load -- admin/book 
+
+ /Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:317:in `rescue in depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:312:in `depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:225:in `require_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:767:in `try_to_load_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:782:in `block in require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:762:in `fixtures'
+/Users/hupengxing/works/myblog/test/test_helper.rb:11:in `<class:TestCase>'
+/Users/hupengxing/works/myblog/test/test_helper.rb:6:in `<top (required)>'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `require'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `<top (required)>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `require'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `block (2 levels) in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `block in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `select'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `<main>'
+Unable to load admin/category, underlying cause No such file to load -- admin/category 
+
+ /Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:317:in `rescue in depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:312:in `depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:225:in `require_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:767:in `try_to_load_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:782:in `block in require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:762:in `fixtures'
+/Users/hupengxing/works/myblog/test/test_helper.rb:11:in `<class:TestCase>'
+/Users/hupengxing/works/myblog/test/test_helper.rb:6:in `<top (required)>'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `require'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `<top (required)>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `require'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `block (2 levels) in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `block in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `select'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `<main>'
+  [1m[36m (0.7ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.3ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.2ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.1ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.1ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.2ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.3ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+Connecting to database specified by database.yml
+Unable to load admin/book, underlying cause No such file to load -- admin/book 
+
+ /Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:317:in `rescue in depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:312:in `depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:225:in `require_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:767:in `try_to_load_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:782:in `block in require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:762:in `fixtures'
+/Users/hupengxing/works/myblog/test/test_helper.rb:11:in `<class:TestCase>'
+/Users/hupengxing/works/myblog/test/test_helper.rb:6:in `<top (required)>'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `require'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `<top (required)>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `require'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `block (2 levels) in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `block in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `select'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `<main>'
+Unable to load admin/category, underlying cause No such file to load -- admin/category 
+
+ /Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:317:in `rescue in depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:312:in `depend_on'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activesupport-3.2.13/lib/active_support/dependencies.rb:225:in `require_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:767:in `try_to_load_dependency'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:782:in `block in require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:779:in `require_fixture_classes'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/activerecord-3.2.13/lib/active_record/fixtures.rb:762:in `fixtures'
+/Users/hupengxing/works/myblog/test/test_helper.rb:11:in `<class:TestCase>'
+/Users/hupengxing/works/myblog/test/test_helper.rb:6:in `<top (required)>'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `require'
+/Users/hupengxing/works/myblog/test/unit/blog_test.rb:3:in `<top (required)>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `require'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:10:in `block (2 levels) in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `each'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:9:in `block in <main>'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `select'
+/Users/hupengxing/.rvm/gems/ruby-1.9.3-p392/gems/rake-10.0.4/lib/rake/rake_test_loader.rb:4:in `<main>'
+  [1m[36m (0.3ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.2ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.1ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.3ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.3ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.3ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.1ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.3ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.2ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `admin_books`
+Mysql2::Error: Table 'hupengxing_test.admin_books' doesn't exist: DELETE FROM `admin_books`
+  [1m[36m (0.0ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+Connecting to database specified by database.yml
+  [1m[36m (0.3ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.2ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM `blogs`
+  [1m[36mFixture Insert (0.4ms)[0m  [1mINSERT INTO `blogs` (`title`, `content`, `category_id`, `created_at`, `updated_at`, `id`) VALUES (NULL, 'MyString', NULL, '2013-08-26 16:38:49', '2013-08-26 16:38:49', 980190962)[0m
+  [1m[35mFixture Insert (0.2ms)[0m  INSERT INTO `blogs` (`title`, `content`, `category_id`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', NULL, '2013-08-26 16:38:49', '2013-08-26 16:38:49', 298486374)
+  [1m[36mFixture Delete (0.1ms)[0m  [1mDELETE FROM `books`[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `books` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:49', '2013-08-26 16:38:49', 980190962)
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `books` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:49', '2013-08-26 16:38:49', 298486374)[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM `categories`
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `categories` (`title`, `desc`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', '2013-08-26 16:38:49', '2013-08-26 16:38:49', 980190962)[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `categories` (`title`, `desc`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', '2013-08-26 16:38:49', '2013-08-26 16:38:49', 298486374)
+  [1m[36mFixture Delete (0.1ms)[0m  [1mDELETE FROM `comments`[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `comments` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:49', '2013-08-26 16:38:49', 980190962)
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `comments` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:49', '2013-08-26 16:38:49', 298486374)[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM `users`
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:49', '2013-08-26 16:38:49', 980190962)[0m
+  [1m[35mFixture Insert (0.2ms)[0m  INSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:49', '2013-08-26 16:38:49', 298486374)
+Mysql2::Error: Duplicate entry '' for key 'index_users_on_email': INSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:49', '2013-08-26 16:38:49', 298486374)
+  [1m[36m (27.4ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.2ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `blogs`
+  [1m[36mFixture Insert (0.2ms)[0m  [1mINSERT INTO `blogs` (`title`, `content`, `category_id`, `created_at`, `updated_at`, `id`) VALUES (NULL, 'MyString', NULL, '2013-08-26 16:38:49', '2013-08-26 16:38:49', 980190962)[0m
+  [1m[35mFixture Insert (0.2ms)[0m  INSERT INTO `blogs` (`title`, `content`, `category_id`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', NULL, '2013-08-26 16:38:49', '2013-08-26 16:38:49', 298486374)
+  [1m[36mFixture Delete (0.1ms)[0m  [1mDELETE FROM `books`[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `books` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:49', '2013-08-26 16:38:49', 980190962)
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `books` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:49', '2013-08-26 16:38:49', 298486374)[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM `categories`
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `categories` (`title`, `desc`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', '2013-08-26 16:38:49', '2013-08-26 16:38:49', 980190962)[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `categories` (`title`, `desc`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', '2013-08-26 16:38:49', '2013-08-26 16:38:49', 298486374)
+  [1m[36mFixture Delete (0.1ms)[0m  [1mDELETE FROM `comments`[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `comments` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `comments` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM `users`
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)[0m
+  [1m[35mFixture Insert (0.2ms)[0m  INSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)
+Mysql2::Error: Duplicate entry '' for key 'index_users_on_email': INSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)
+  [1m[36m (0.5ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.2ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.1ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM `blogs`
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `blogs` (`title`, `content`, `category_id`, `created_at`, `updated_at`, `id`) VALUES (NULL, 'MyString', NULL, '2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `blogs` (`title`, `content`, `category_id`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', NULL, '2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)
+  [1m[36mFixture Delete (0.1ms)[0m  [1mDELETE FROM `books`[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `books` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `books` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM `categories`
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `categories` (`title`, `desc`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', '2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `categories` (`title`, `desc`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', '2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)
+  [1m[36mFixture Delete (0.1ms)[0m  [1mDELETE FROM `comments`[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `comments` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `comments` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `users`
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)[0m
+  [1m[35mFixture Insert (0.2ms)[0m  INSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)
+Mysql2::Error: Duplicate entry '' for key 'index_users_on_email': INSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)
+  [1m[36m (0.7ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.1ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM `blogs`
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `blogs` (`title`, `content`, `category_id`, `created_at`, `updated_at`, `id`) VALUES (NULL, 'MyString', NULL, '2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `blogs` (`title`, `content`, `category_id`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', NULL, '2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)
+  [1m[36mFixture Delete (0.1ms)[0m  [1mDELETE FROM `books`[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `books` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `books` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM `categories`
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `categories` (`title`, `desc`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', '2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `categories` (`title`, `desc`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', '2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)
+  [1m[36mFixture Delete (0.1ms)[0m  [1mDELETE FROM `comments`[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `comments` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `comments` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM `users`
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)[0m
+  [1m[35mFixture Insert (0.2ms)[0m  INSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)
+Mysql2::Error: Duplicate entry '' for key 'index_users_on_email': INSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)
+  [1m[36m (0.5ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 1
+  [1m[36m (0.1ms)[0m  [1mSELECT @@FOREIGN_KEY_CHECKS[0m
+  [1m[35m (0.0ms)[0m  SET FOREIGN_KEY_CHECKS = 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `blogs`
+  [1m[36mFixture Insert (0.2ms)[0m  [1mINSERT INTO `blogs` (`title`, `content`, `category_id`, `created_at`, `updated_at`, `id`) VALUES (NULL, 'MyString', NULL, '2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)[0m
+  [1m[35mFixture Insert (0.2ms)[0m  INSERT INTO `blogs` (`title`, `content`, `category_id`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', NULL, '2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)
+  [1m[36mFixture Delete (0.1ms)[0m  [1mDELETE FROM `books`[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `books` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `books` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)[0m
+  [1m[35mFixture Delete (0.1ms)[0m  DELETE FROM `categories`
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `categories` (`title`, `desc`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', '2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `categories` (`title`, `desc`, `created_at`, `updated_at`, `id`) VALUES ('MyString', 'MyString', '2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)
+  [1m[36mFixture Delete (0.1ms)[0m  [1mDELETE FROM `comments`[0m
+  [1m[35mFixture Insert (0.1ms)[0m  INSERT INTO `comments` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `comments` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)[0m
+  [1m[35mFixture Delete (0.2ms)[0m  DELETE FROM `users`
+  [1m[36mFixture Insert (0.1ms)[0m  [1mINSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 980190962)[0m
+  [1m[35mFixture Insert (0.2ms)[0m  INSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)
+Mysql2::Error: Duplicate entry '' for key 'index_users_on_email': INSERT INTO `users` (`created_at`, `updated_at`, `id`) VALUES ('2013-08-26 16:38:50', '2013-08-26 16:38:50', 298486374)
+  [1m[36m (0.4ms)[0m  [1mROLLBACK[0m
+  [1m[35m (0.1ms)[0m  SET FOREIGN_KEY_CHECKS = 1
