@@ -12,7 +12,9 @@ class Blog < ActiveRecord::Base
   # after_save :recount_blog
   after_destroy :recount_blog
 
-  scope :recent_blogs, order("id desc")
+  def recent_blogs
+    order("id desc")
+  end
 
   def recount_blog
     $cache.write :all_blogs, Blog.recent_blogs.to_a

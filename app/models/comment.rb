@@ -11,7 +11,9 @@ class Comment < ActiveRecord::Base
 
   attr_accessor :captcha
 
-  scope :recent_comments, order("created_at desc").limit(20)
+  def recent_comments
+    order("created_at desc").limit(20)
+  end
 
   after_save :recount_comments
   after_destroy :recount_comments
