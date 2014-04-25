@@ -12,7 +12,7 @@ class Blog < ActiveRecord::Base
   # after_save :recount_blog
   after_destroy :recount_blog
 
-  def recent_blogs
+  def self.recent_blogs
     order("id desc")
   end
 
