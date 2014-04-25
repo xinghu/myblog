@@ -46,6 +46,7 @@ gem 'rspec-rails'
 # Use unicorn as the web server
 
  gem 'unicorn'
+ gem 'pry'
 
 # Deploy with Capistrano
 # gem 'capistrano'
