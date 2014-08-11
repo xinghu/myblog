@@ -14,14 +14,14 @@ rails_env = ENV['RAILS_ENV'] || 'production'
 
 worker_processes rails_env == "production" ? 2 : 2
 
-APP_PATH = '/Users/hupengxing/works/myblog'
+APP_PATH = '/home/hupengxing/works/myblog'
 
 # Since Unicorn is never exposed to outside clients, it does not need to
 # run on the standard HTTP port (80), there is no reason to start Unicorn
 # as root unless it's from system init scripts.
 # If running the master process as root and the workers as an unprivileged
 # user, do this to switch euid/egid in the workers (also chowns logs):
-user "hupengxing", "staff"
+user "hupengxing", "hupengxing"
 
 # Help ensure your application will always spawn in the symlinked
 # "current" directory that Capistrano sets up.
@@ -30,7 +30,7 @@ working_directory "#{APP_PATH}" # available in 0.94.0+
 # listen on both a Unix domain socket and a TCP port,
 # we use a shorter backlog for quicker failover when busy
 listen "/tmp/unicorn.sock", :backlog => 1024
-listen 8081, tcp_nopush: false, tcp_nodelay: true
+listen 8080, tcp_nopush: false, tcp_nodelay: true
 
 # nuke workers after 30 seconds instead of 60 seconds (the default)
 timeout 30
