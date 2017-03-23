@@ -5,7 +5,7 @@ class Blog < ActiveRecord::Base
 
   belongs_to :category, :counter_cache => true
 
-  has_many :comments, :conditions => {:ancestry => nil}
+  has_many :comments, -> {where(:ancestry => nil)}
 
   permalink :title
 

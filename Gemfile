@@ -29,12 +29,12 @@ gem 'redis-objects'
 
 
 
-gem 'sass-rails', '~> 3.2'
-gem 'bootstrap-sass', '~> 2.3.1.0'
+gem 'sass-rails'
+gem 'bootstrap-sass'
 
 #admin and role
 gem 'devise'
-gem 'rails_admin'
+# gem 'rails_admin'
 
 #make comment as a tree.add a column ancestry,it records parent id and others.
 gem 'ancestry'

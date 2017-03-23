@@ -16,7 +16,7 @@ module Hupengxing
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
 
-    config.autoload_paths += %W(#{config.root}/app/models/ckeditor)
+    # config.autoload_paths += %W(#{config.root}/app/models/ckeditor)
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
@@ -53,10 +53,10 @@ module Hupengxing
     # config.action_view.javascript_expansions[:syntax_highlighter] = %w(syntaxhighlighter/shCore syntaxhighlighter/shBrushBash syntaxhighlighter/shBrushRuby
     # syntaxhighlighter/shBrushJScript )
 
-    config.cache_store = :redis_store, ENV["REDISTOGO_URL"]
+    # config.cache_store = :redis_store, ENV["REDISTOGO_URL"]
 
     # 电子邮件配置
-    config.action_mailer.delivery_method = :sendmail
+    # config.action_mailer.delivery_method = :sendmail
     # config.action_mailer.smtp_settings = {
     # :address              => "smtp.gmail.com",
     # :port                 => 587,
@@ -66,19 +66,19 @@ module Hupengxing
     # :authentication       => 'plain',
     # :enable_starttls_auto => true  }
 
-    ActionMailer::Base.smtp_settings = {
-      :address        => "smtp.sendgrid.net",
-      :port           => "25",
-      :authentication => :plain,
-      :user_name      => "app283668@heroku.com",
-      :password       => "a7eced0dd81c426e9a",
-      :domain         => "www.hupengxing.com"
-    }
+    # ActionMailer::Base.smtp_settings = {
+    #   :address        => "smtp.sendgrid.net",
+    #   :port           => "25",
+    #   :authentication => :plain,
+    #   :user_name      => "app283668@heroku.com",
+    #   :password       => "a7eced0dd81c426e9a",
+    #   :domain         => "www.hupengxing.com"
+    # }
 
-    config.action_mailer.perform_deliveries = true
-    config.action_mailer.raise_delivery_errors = true
-    #解决sendgrid bug
-    config.action_mailer.sendmail_settings = {:arguments => '-i'}
+    # config.action_mailer.perform_deliveries = true
+    # config.action_mailer.raise_delivery_errors = true
+    # #解决sendgrid bug
+    # config.action_mailer.sendmail_settings = {:arguments => '-i'}
 
     if Rails.env == 'development'
       ActiveRecord::Base.logger = Logger.new(STDOUT)
